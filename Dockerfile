@@ -23,7 +23,10 @@ RUN \
   mkdir -p \
     /app/Jackett
 
-COPY ./Jackett.Server/bin/Release/net8.0/linux-x64/ /app/Jackett
+COPY ./Jackett/* /app/Jackett
+
+RUN ls -la /app/Jackett; \
+    ls -la /app/Jackett/*
 
 # add local files
 COPY root/ /
