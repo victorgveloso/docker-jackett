@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  jackett:
+    image: lscr.io/linuxserver/jackett:local
+    container_name: jackett
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - AUTO_UPDATE=true
+    volumes:
+      - ./data:/config
+      - ./blackhole:/downloads
+    networks:
+      - traefik_default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik_default"
+      - "traefik.http.routers.jackett.entrypoints=web,websecure"
+      - "traefik.http.routers.jackett.rule=Host(`YOURHOST`)"
+      - "traefik.http.services.jackett.loadbalancer.server.port=9117"
+      - "traefik.http.routers.jackett.tls=true"
+      - "traefik.http.routers.jackett.tls.certresolver=production"
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+
+
+  flaresolverr:
+    image: flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - TZ=Europe/London
+    networks:
+      - traefik_default
+    ports:
+      - 8191:8191
+    restart: unless-stopped
+networks:
+  traefik_default:
+    external: true
