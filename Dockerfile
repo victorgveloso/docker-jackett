@@ -23,7 +23,7 @@ RUN \
   mkdir -p \
     /app/
 
-COPY ./Jackett /app/Jackett
+ADD ./Jackett.tar.zstd /app
 
 # add local files
 COPY root/ /
