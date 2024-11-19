@@ -21,25 +21,9 @@ RUN \
     icu-libs && \
   echo "**** install jackett ****" && \
   mkdir -p \
-    /app/Jackett && \
-  if [ -z ${JACKETT_RELEASE+x} ]; then \
-    JACKETT_RELEASE=$(curl -sX GET "https://api.github.com/repos/Jackett/Jackett/releases/latest" \
-    | jq -r .tag_name); \
-  fi && \
-  curl -o \
-    /tmp/jacket.tar.gz -L \
-    "https://github.com/Jackett/Jackett/releases/download/${JACKETT_RELEASE}/Jackett.Binaries.LinuxMuslAMDx64.tar.gz" && \
-  tar xf \
-    /tmp/jacket.tar.gz -C \
-    /app/Jackett --strip-components=1 && \
-  echo "**** fix for host id mapping error ****" && \
-  chown -R root:root /app/Jackett && \
-  echo "**** save docker image version ****" && \
-  echo "${VERSION}" > /etc/docker-image && \
-  printf "Linuxserver.io version: ${VERSION}\nBuild-date: ${BUILD_DATE}" > /build_version && \
-  echo "**** cleanup ****" && \
-  rm -rf \
-    /tmp/*
+    /app/Jackett
+
+COPY ./Jackett.Server/bin/Release/net8.0/linux-x64/ /app/Jackett
 
 # add local files
 COPY root/ /
