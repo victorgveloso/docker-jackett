@@ -21,12 +21,9 @@ RUN \
     icu-libs && \
   echo "**** install jackett ****" && \
   mkdir -p \
-    /app/Jackett
+    /app/
 
-COPY ./Jackett/* /app/Jackett
-
-RUN ls -la /app/Jackett; \
-    ls -la /app/Jackett/*
+COPY ./Jackett /app/Jackett
 
 # add local files
 COPY root/ /
